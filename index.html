@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เปิดใน Google Chrome</title>
+    <!-- ใช้ Tailwind CSS เพื่อความสวยงาม -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- ฟอนต์ภาษาไทย (Kanit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center mx-4">
+        <!-- นำโลโก้ SVG ออกแล้ว -->
+        
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">เปิดใน Google Chrome</h1>
+        <p class="text-gray-500 mb-8">เพื่อประสบการณ์การใช้งานที่ดีที่สุด กรุณาเปิดลิงก์นี้ในแอป Chrome</p>
+
+        <!-- ปุ่มกด -->
+        <button onclick="openInChrome()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 flex items-center justify-center gap-2">
+            <span>🚀 ไปที่ Facebook (ใน Chrome)</span>
+        </button>
+
+        <p id="device-info" class="mt-6 text-xs text-gray-400">กำลังตรวจสอบอุปกรณ์...</p>
+    </div>
+
+    <script>
+        // กำหนด URL ปลายทางที่คุณต้องการให้เปิด
+        const destinationUrl = "https://www.facebook.com"; 
+
+        function getMobileOperatingSystem() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+            if (/android/i.test(userAgent)) {
+                return "Android";
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                return "iOS";
+            }
+
+            return "Desktop";
+        }
+
+        const os = getMobileOperatingSystem();
+        document.getElementById('device-info').innerText = `ตรวจพบอุปกรณ์: ${os}`;
+
+        function openInChrome() {
+            const urlNoProtocol = destinationUrl.replace(/^https?:\/\//, '');
+            
+            if (os === "Android") {
+                const intentUrl = `intent://${urlNoProtocol}#Intent;scheme=https;package=com.android.chrome;end`;
+                window.location.href = intentUrl;
+            } 
+            else if (os === "iOS") {
+                const iosUrl = `googlechromes://${urlNoProtocol}`;
+                window.location.href = iosUrl;
+
+                setTimeout(function() {
+                    window.location.href = destinationUrl;
+                }, 2000);
+            } 
+            else {
+                window.open(destinationUrl, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
